@@ -4,7 +4,7 @@ import cors from 'cors';
 
 const logRequest = (
 	req: express.Request,
-	_res: express.Response,
+	res: express.Response,
 	next: express.NextFunction
 ) => {
 	console.log(`${req.method} ${req.path} HTTP/${req.httpVersion}`);
@@ -12,6 +12,7 @@ const logRequest = (
 		console.log(`${key}: ${req.headers[key]}`);
 	}
 	console.log(`Body: ${JSON.stringify(req.body)}`);
+	res.setHeader('Set-Cookie', 'cookie=value; Path=/; HttpOnly');
 
 	next();
 };
@@ -29,17 +30,14 @@ const main = async () => {
 	});
 
 	app.post('*', (req, res) => {
-		res.cookie('name', 'value');
 		res.status(200).send(`Got it! from ${req.path}`);
 	});
 
 	app.put('*', (req, res) => {
-		res.cookie('name', 'value');
 		res.status(200).send(`Got it! from ${req.path}`);
 	});
 
 	app.delete('*', (req, res) => {
-		res.cookie('name', 'value');
 		res.status(200).send(`Got it! from ${req.path}`);
 	});
 
