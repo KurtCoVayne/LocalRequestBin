@@ -43,10 +43,18 @@ const main = async () => {
 		if (url && (url.protocol === 'http:' || url.protocol === 'https:')) {
 			axios.get(path, { httpsAgent })
 				.then(response => {
-					res.status(response.status).send(response.data);
+					// Log response, and replicate all headers, cookies, data, etc.
+					console.log(`========== RESPONSE FROM ${url?.toString()} ==========`);
+					for(const header in response.headers) {
+						console.log(`${header}: ${req.headers[header]}`);
+						res.header(header, response.headers[header]);
+					}
+					console.log(`Response Data: ${JSON.stringify(response.data)}`);
+					res.send(response.data);					
 				})
 				.catch(error => {
-					res.status(error.response.status).send(error.response.data);
+					console.log(error);
+					res.status(500).send("An error has occurred while trying to proxy the request");
 				}
 			);
 		} else {
