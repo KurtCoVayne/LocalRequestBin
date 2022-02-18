@@ -13,6 +13,9 @@ const requestHandler = (
 		console.log(`${key}: ${req.headers[key]}`);
 	}
 	console.log(`Body: ${JSON.stringify(req.body)}`);
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 	res.setHeader('Set-Cookie', 'cookie=value; Path=/; HttpOnly');
 
 	const path = req.path.substring(1);
@@ -34,6 +37,7 @@ const requestHandler = (
 			logLevel: 'debug',
 			onProxyReq: (proxyReq, req, res) => {
 				res.setHeader('Access-Control-Allow-Origin', '*');
+				res.setHeader('Access-Control-Allow-Headers', '*');
 				res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 				proxyReq.setHeader('X-Forwarded-For', req.ip);
 				proxyReq.setHeader('X-Forwarded-Proto', req.protocol);
